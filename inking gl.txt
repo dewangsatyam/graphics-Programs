@@ -1,0 +1,57 @@
+
+#include <GL/glut.h>
+#include <vector>
+
+std::vector< int > points;
+void draw()
+{
+    glBegin(GL_LINE_STRIP);
+    glColor3ub(255, 255, 0);
+    for (size_t i = 0; i < points.size(); i += 2)
+    {
+        glVertex2i(points[i + 0], points[i + 1]);
+    }
+    glEnd();
+
+    glutSwapBuffers();
+}
+void mouse(int button, int state, int x, int y)
+{
+    if (state == GLUT_DOWN)
+        points.clear();
+    points.push_back(x);
+    points.push_back(y);
+    draw();
+}
+
+void motion(int x, int y)
+{
+    points.push_back(x);
+    points.push_back(y);
+    draw();
+}
+
+void display()
+{
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    double w = glutGet(GLUT_WINDOW_WIDTH);
+    double h = glutGet(GLUT_WINDOW_HEIGHT);
+    glOrtho(0, w, h, 0, -1, 1);
+    glMatrixMode(GL_MODELVIEW);//modelview matrix stack
+    draw();
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+    glutCreateWindow("GLUT-Free Hand Drawing");
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
+    glutDisplayFunc(display);
+    glutMainLoop();
+    return 0;
+}

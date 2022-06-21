@@ -1,0 +1,85 @@
+#include<stdio.h>
+#include<conio.h>
+#include<graphics.h>
+#include<math.h>
+#include<dos.h>
+void main()
+{
+int gd=DETECT,gm;
+initgraph(&gd,&gm,"C:\\TURBOC3\\BGI");
+int p,x,y,x1,x2,y1,y2,xend,dx,dy;
+float slope;
+printf("enter x1,y1");
+scanf("%d%d",&x1,&y1);
+printf("enter x2,y2");
+scanf("%d%d",&x2,&y2);
+dx=abs(x2-x1);
+dy=abs(y2-y1);
+slope=(float)dy/dx;
+p=2*dy-dx;
+if(0<slope<1)
+{
+	if(x1>x2)
+    {
+        x=x2;
+        y=y2;
+        xend=x1;
+    }
+    else
+    {
+        x=x1;
+        y=y1;
+        xend=x2;
+    }
+    putpixel(x,y,5);
+    while(x<=xend)
+    {
+	if(p<0)
+	{
+	    x++;
+	    p+=2*dy;
+	}
+	else
+	{
+	    x++;
+	    y++;
+	    p+=2*dy-2*dx;
+	}
+	putpixel(x,y,5);
+    }
+}
+else
+{
+    if(x1>x2)
+    {
+	x=x2;
+	y=y2;
+	xend=x1;
+    }
+    else
+    {
+	x=x1;
+	y=y1;
+	xend=x2;
+    }
+    putpixel(x,y,5);
+    while(x<=xend)
+    {
+	if(p<0)
+	{
+	    x--;
+	    p+=2*dy;
+	}
+	else
+	{
+	    x--;
+            y--;
+             p+=2*dy-2*dx;
+
+        }
+        putpixel(x,y,5);
+    }
+}
+getch();
+closegraph();
+}
